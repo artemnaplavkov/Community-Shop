@@ -77,9 +77,9 @@ int main()
     };
     fs.close();
     rs=0;
-    for(int i=0;i<V_name.size();i++){
+    /*for(int i=0;i<V_name.size();i++){
         cout<<V_name[i]<<endl;
-    }
+    }*/
     cout<<"Enter your name(If you don't have account enter: new): "<<endl;
     cin>>Tname;
     if(Tname=="new"){
@@ -151,6 +151,13 @@ int main()
                    break;
                 }
             };
+        }
+    }
+    if(rs=='0'){
+        cout<<"1-make an order"<<endl<<"2-check order status"<<endl<<"3-show list of orders"<<endl<<"4-cancel order"<<endl;
+        cin>>key;
+        switch(key){
+
         }
     }
     return 0;
