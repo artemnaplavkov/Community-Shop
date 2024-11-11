@@ -32,3 +32,38 @@ int find_courier(std::vector<abstracts::Courier>& couriers, abstracts::Order& or
 	}
 	return -1;
 }
+
+int find_order(std::vector<abstracts::Order>& orders, int order_id) {   // Ищет заказ с идентификатором "order_id" в "orders"
+	for (int i = 0; i < orders.size(); i++) {
+		if (orders[i].id == order_id)
+			return i;
+	}
+	return -1;
+}
+
+void TimeManager::time_shift(int hours,   //  Сдвигает время на заданное число часов, выполняя: назначение заказов, перемещение курьеров, завершение заказов.
+	std::vector<abstracts::Storage>& storages,
+	std::vector<abstracts::Courier>& couriers,
+	std::vector<abstracts::Order>& orders) {
+	for (int i = 0; hours > i; i++) {
+		assign_orders(storages, couriers, orders);
+		one_hour_move(storages, couriers, orders);
+		complete_orders(storages, couriers, orders);
+	}
+}
+
+void TimeManager::assign_orders(    //  проверяет каждый заказ в "orders", если заказ не обработан находит соответствующее хранилище, курьера, связанного с этим хранилищем, если курьер найден, устанавливает состояние заказа и связывает с ним курьера
+	std::vector<abstracts::Storage>& storages,
+	std::vector<abstracts::Courier>& couriers,
+	std::vector<abstracts::Order>& orders) {
+	for (int i = 0; i < orders.size();i++) {
+		if (orders[i].state != abstracts::not_processed)
+			continue;
+		int storage_index = find_storage(storages, orders[i].storage_id);
+		int courier_index = find_courier(couriers, storages[storage_index]);
+		if (courier_index < 0)
+			continue;
+		orders[i].state = abstracts::in_progress;
+		couriers[courier_index].current_order_id = orders[i].id;
+	}
+}
