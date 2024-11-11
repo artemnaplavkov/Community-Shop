@@ -67,3 +67,35 @@ void TimeManager::assign_orders(    //  проверяет каждый зака
 		couriers[courier_index].current_order_id = orders[i].id;
 	}
 }
+void TimeManager::one_hour_move(    // Перемещает курьеров на основании их текущей позиции
+	std::vector<abstracts::Storage>& storages,
+	std::vector<abstracts::Courier>& couriers,
+	std::vector<abstracts::Order>& orders) {
+	for (int i = 0; i < couriers.size(); i++) {
+		abstracts::Point a = couriers[i].pos;
+		abstracts::Point b;
+		if (couriers[i].current_order_id != 0) {
+			int order_index = find_order(orders, couriers[i].current_order_id);
+			b = orders[order_index].target;
+		}
+		else {
+			int storage_index = find_storage(storages, couriers[i].storage_id);
+			b = storages[storage_index].pos;
+		}
+		couriers[i].pos = singletones::PointManager::new_point(a, b, couriers[i].speed_kmh);
+	}
+}
+void TimeManager::complete_orders(   //  Проверяет все заказы, если заказ в процессе, то ищет курьера, выполняющего этот заказ, если курьер найден, завершает заказ и освобождает курьера
+	std::vector<abstracts::Storage>& storages,
+	std::vector<abstracts::Courier>& couriers,
+	std::vector<abstracts::Order>& orders) {
+	for (int i = 0; i < orders.size(); i++) {
+		if (orders[i].state != abstracts::in_progress)
+			continue;
+		int courier_index = find_courier(couriers, orders[i]);
+		if (courier_index < 0)
+			continue;
+		orders[i].state = abstracts::completed;
+		couriers[courier_index].current_order_id = 0;
+	}
+}
