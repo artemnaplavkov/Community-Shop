@@ -102,8 +102,9 @@ int main()
     ifstream kk;
     kk.open("UncOrders.txt");
     while(getline(kk,kkk)){
-        for(int i=0;i<kkk.size();i++){
+        for(int i=0;i<=kkk.size();i++){
             c=kkk[i];
+            if(i==kkk.size()) Order=Order+' ';
             if(c!=' '){
                 Order.push_back(c);
             }
@@ -114,12 +115,10 @@ int main()
             }
         }
         UnOrder.push_back(UOrder);
+        UOrder.clear();
     }
     kk.close();
     rs=0;
-    /*for(int i=0;i<V_name.size();i++){
-        cout<<V_name[i]<<endl;
-    }*/
     cout<<"Enter your name(If you don't have account enter: new): "<<endl;
     cin>>Tname;
     if(Tname=="new"){
@@ -170,6 +169,7 @@ int main()
             <<"12-time shift"<<endl//+
             <<"13-list og uncomfored orders"<<endl//+
             <<"14-confirm order"<<endl//+
+            <<"15-delete order from uncomfired list"<<endl
             <<"---------------------------------------"<<endl;
             cin>>key;
             switch(key){
@@ -250,15 +250,17 @@ int main()
                 }
                 cout<<"List of uncomfirmed orders:"<<endl;
                 for(int i=0;i<UnOrder.size();i++){
-                    UOrder==UnOrder[i];
-                    for(int j=0;j<UOrder.size();j++){
-                        if(j<UOrder.size()-2) cout<<UOrder[j]<<" ";
-                        if(j==UOrder.size()-2) cout<<endl<<"X="<<UOrder[j]<<endl;
-                        if(j==UOrder.size()-1) cout<<"Y="<<UOrder[j]<<endl;
+                    UOrder=UnOrder[i];
+                    cout<<"Name: "<<UOrder[0]<<endl;
+                    cout<<"Password: "<<UOrder[1]<<endl;
+                    for(int j=2;j<UOrder.size()-2;j++){
+                        cout<<UOrder[j]<<" ";
                     }
-                    if(i!=UnOrder.size()-1) cout<<"-----------------------"<<endl;
+                    cout<<endl<<"x="<<UOrder[UOrder.size()-2];
+                    cout<<endl<<"y="<<UOrder[UOrder.size()-1]<<endl;
                 }
                 cout<<"+++++++++++++++++++++++"<<endl;
+                break;
             case 14:
                 cout<<"+++++++++++++++++++++++"<<endl;
                 if(UnOrder.size()==0){
@@ -267,17 +269,64 @@ int main()
                 }
                 cout<<"List of uncomfirmed orders:"<<endl;
                 for(int i=0;i<UnOrder.size();i++){
-                    UOrder==UnOrder[i];
-                    for(int j=0;j<UOrder.size();j++){
-                        if(j<UOrder.size()-2) cout<<UOrder[j]<<" ";
-                        if(j==UOrder.size()-2) cout<<endl<<"X="<<UOrder[j]<<endl;
-                        if(j==UOrder.size()-1) cout<<"Y="<<UOrder[j]<<endl;
+                    UOrder=UnOrder[i];
+                    cout<<"Name: "<<UOrder[0]<<endl;
+                    cout<<"Password: "<<UOrder[1]<<endl;
+                    for(int j=2;j<UOrder.size()-2;j++){
+                        cout<<UOrder[j]<<" ";
                     }
-                    if(i!=UnOrder.size()-1) cout<<"-----------------------"<<endl;
+                    cout<<endl<<"x="<<UOrder[UOrder.size()-2];
+                    cout<<endl<<"y="<<UOrder[UOrder.size()-1]<<endl;
                 }
                 cout<<"+++++++++++++++++++++++"<<endl;
                 database.add_order(orders, storages);
                             break;
+            case 15:
+                cout<<"+++++++++++++++++++++++"<<endl;
+                if(UnOrder.size()==0){
+                    cout<<"No uncomfired orders"<<endl;
+                    continue;
+                }
+                cout<<"List of uncomfirmed orders:"<<endl;
+                for(int i=0;i<UnOrder.size();i++){
+                    UOrder=UnOrder[i];
+                    cout<<"Name: "<<UOrder[0]<<endl;
+                    cout<<"Password: "<<UOrder[1]<<endl;
+                    for(int j=2;j<UOrder.size()-2;j++){
+                        cout<<UOrder[j]<<" ";
+                    }
+                    cout<<endl<<"x="<<UOrder[UOrder.size()-2];
+                    cout<<endl<<"y="<<UOrder[UOrder.size()-1]<<endl;
+                }
+                cout<<"+++++++++++++++++++++++"<<endl;
+                cout<<"Enter number of order with one you would like to delete:"<<endl;
+                cin>>ans;
+                if(ans>UnOrder.size()){
+                    cout<<"No such numder"<<endl;
+                    break;
+                }
+                remove("UncOrders.txt");
+                for(int i=0;i!=ans;i++){
+                    UOrder==UnOrder[i];
+                    ofstream MyFile("UncOrders.txt",ios::app);
+                    for(int i=0;i<UOrder.size();i++){
+                        MyFile<<UOrder[i];
+                        MyFile<<' ';
+                    }
+                    MyFile<<endl;;
+                    MyFile.close();
+                }
+                for(int i=ans+1;i<UnOrder.size();i++){
+                    UOrder==UnOrder[i];
+                    ofstream MyFile("UncOrders.txt",ios::app);
+                    for(int i=0;i<UOrder.size();i++){
+                        MyFile<<UOrder[i];
+                        MyFile<<' ';
+                    }
+                    MyFile<<endl;;
+                    MyFile.close();
+                }
+                break;
             default:
                 cout<<"Command error"<<endl;
                 break;
@@ -292,8 +341,12 @@ int main()
         cin>>key;
         switch(key){
             case 1:
+                UOrder.clear();
+                UOrder.push_back(Tname);
+                UOrder.push_back(Tpas);
                 cout<<"Enter your order(enter separated by commas):"<<endl;
                 cin>>Order;
+                Order=Order+',';
                 for(int i=0;i<Order.size();i++){
                     c=Order[i];
                     if(c!=','){
@@ -307,7 +360,7 @@ int main()
                 cout<<"Enter your coordinates:"<<endl<<"X=";
                 cin>>p;
                 UOrder.push_back(p);
-                cout<<endl<<"Y=";
+                cout<<"Y=";
                 cin>>p;
                 UOrder.push_back(p);
                 ofstream MyFile("UncOrders.txt",ios::app);
@@ -315,6 +368,7 @@ int main()
                     MyFile<<UOrder[i];
                     MyFile<<' ';
                 }
+                MyFile<<endl;;
                 MyFile.close();
         }
     }
