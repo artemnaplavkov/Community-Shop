@@ -8,6 +8,10 @@
 #include "storage.h"
 #include "time_manager.h"
 #include "database_manager.h"
+#include "UserLoad.h"
+#include "NewUser.h"
+#include "UserEntrance.h"
+#include "AdminStuff.h"
 
 using namespace std;
 
@@ -40,118 +44,19 @@ int main()
     vector<string> V_pas;
     char rs;
     vector<char> V_rs;
-    ifstream k("UncOrders.txt");
-    if(k.is_open()!=true){
-        ofstream MyFile("UncOrders.txt",ios::app);
-        MyFile.close();
-    }
-    k.close();
-    ifstream in("User_list.txt");
-    if(in.is_open()==false){
-        cout<<"File not found. Would you like to create it?"<<endl;
-        cout<<"1-yes"<<endl;
-        cout<<"2-no"<<endl;
-        cin>>ans;
-        if(ans==1){
-            ofstream MyFile("User_list.txt",ios::app);
-            cout<<"File successfully created"<<endl;
-            cout<<"Name and password should be without space"<<endl;
-            cout<<"Enter admin name: "<<endl;
-            cin>>name;
-            cout<<"Enter admin password: "<<endl;
-            cin>>pas;
-            MyFile<<name;
-            MyFile<<' ';
-            MyFile<<pas;
-            MyFile<<' ';
-            MyFile<<1<<endl;
-            MyFile.close();
-        }
-        else{
-            cout<<"File error"<<endl;
-        }
-        return 0;
-    };
-    in.close();
-    ifstream fs;
-    fs.open("User_list.txt");
-    while(getline(fs, abc)){
-        for(int i=0;i<abc.size();i++){
-            c=abc[i];
-            if(c!=' ' && flag==0){
-                name.push_back(c);
-            }
-            if(c!=' ' && flag==1){
-                pas.push_back(c);
-            }
-            if(flag==2){
-                rs=c;
-                break;
-            }
-            if(c==' ' && flag==1) flag=2;
-            if(c==' ' && flag==0) flag=1;
-        }
-        flag=0;
-        V_pas.push_back(pas);
-        V_name.push_back(name);
-        V_rs.push_back(rs);
-        pas.clear();
-        name.clear();
-    };
-    fs.close();
-    ifstream kk;
-    kk.open("UncOrders.txt");
-    while(getline(kk,kkk)){
-        for(int i=0;i<=kkk.size();i++){
-            c=kkk[i];
-            if(i==kkk.size()) Order=Order+' ';
-            if(c!=' '){
-                Order.push_back(c);
-            }
-            else{
-                UOrder.push_back(Order);
-                Order.clear();
-                continue;
-            }
-        }
-        UnOrder.push_back(UOrder);
-        UOrder.clear();
-    }
-    kk.close();
+    UserLoad();
+    User_list(V_pas,V_name,V_rs,UnOrder,UOrder);
     rs=0;
     cout<<"Enter your name(If you don't have account enter: new): "<<endl;
     cin>>Tname;
     if(Tname=="new"){
-        cout<<"Enter your name:"<<endl;
-        cin>>Tname;
-        cout<<"Enter your password: "<<endl;
-        cin>>Tpas;
-        V_pas.push_back(Tpas);
-        V_name.push_back(Tname);
-        V_rs.push_back(rs);
-        ofstream MyFile("User_list.txt",ios::app);
-        MyFile<<Tname;
-        MyFile<<' ';
-        MyFile<<Tpas;
-        MyFile<<' ';
-        MyFile<<0<<endl;
-        MyFile.close();
+        NewUser(V_pas,V_name,V_rs);
         return 0;
     }
     cout<<"Enter your password: "<<endl;
     cin>>Tpas;
-    int flag2=0;
     int userID;
-    for(int i=0;i<V_name.size();i++){
-        if(V_name[i]==Tname && V_pas[i]==Tpas){
-           cout<<"Welcome "<<Tname<<endl;
-           rs=V_rs[i];
-           flag2=1;
-           userID=i;
-           break;
-        }
-    };
-    if(flag2==0) cout<<"Name or password error"<<endl;
+    UserEntrance(Tname, V_pas, V_name,V_rs,Tpas, userID,rs);
     if(rs=='1'){
         while(1){
             cout<<"---------------------------------------"<<endl
@@ -202,39 +107,7 @@ int main()
                         break;
                     }
             case 11:
-                cout<<"Enter user name: "<<endl;
-                cin>>Tname;
-                cout<<"Enter user password: "<<endl;
-                cin>>Tpas;
-                for(int i=0;i<V_name.size();i++){
-                    if(V_name[i]==Tname && V_pas[i]==Tpas){
-                       cout<<"Found: "<<V_name[i]<<" "<<V_pas[i]<<" "<<V_rs[i]<<endl;
-                       cout<<"Should this user 1-admin or 2-ordinary user"<<endl;
-                       int a;
-                       cin>>a;
-                       if(a==1){
-                           V_rs[i]='1';
-                       }
-                       else if(a==2){
-                           V_rs[i]='0';
-                       }
-                       else{
-                           cout<<"Command error"<<endl;
-                           return 0;
-                       }
-                       if(remove("User_list.txt")==true) cout<<"123"<<endl;
-                       for(int i=0;i<V_name.size();i++){
-                           ofstream MyFile("User_list.txt",ios::app);
-                           MyFile<<V_name[i];
-                           MyFile<<' ';
-                           MyFile<<V_pas[i];
-                           MyFile<<' ';
-                           MyFile<<V_rs[i]<<endl;
-                           MyFile.close();
-                       }
-                       break;
-                    }
-                };
+                ChangeStatus(V_pas,V_name,V_rs);
                 break;
             case 12:
                 std::cout << "hours=";
