@@ -40,3 +40,58 @@ void ChangeStatus(vector<string>& V_pas,vector<string>& V_name,vector<char>& V_r
         }
     };
 }
+void UncOrder(vector<vector<string>>& UnOrder,vector<string>& UOrder){
+    cout<<"+++++++++++++++++++++++"<<endl;
+    int flag=0;
+    if(UnOrder.size()==0){
+        cout<<"No uncomfired orders"<<endl;
+        flag=1;
+    }
+    if(flag==0){
+        cout<<"List of uncomfirmed orders:"<<endl;
+        for(int i=0;i<UnOrder.size();i++){
+            UOrder=UnOrder[i];
+            cout<<"Name: "<<UOrder[0]<<endl;
+            cout<<"Password: "<<UOrder[1]<<endl;
+            for(int j=2;j<UOrder.size()-2;j++){
+                cout<<UOrder[j]<<" ";
+            }
+            cout<<endl<<"x="<<UOrder[UOrder.size()-2];
+            cout<<endl<<"y="<<UOrder[UOrder.size()-1]<<endl;
+        }
+        cout<<"+++++++++++++++++++++++"<<endl;
+    }
+}
+void ROrder(vector<vector<string>>& UnOrder,vector<string>& UOrder){
+    int ans;
+    int flag=0;
+    cout<<"Enter number of order with one you would like to delete:"<<endl;
+    cin>>ans;
+    if(ans>UnOrder.size()){
+        cout<<"No such number"<<endl;
+        flag=1;
+    }
+    if(flag==0){
+        remove("UncOrders.txt");
+        for(int i=0;i!=ans;i++){
+            UOrder==UnOrder[i];
+            ofstream MyFile("UncOrders.txt",ios::app);
+            for(int i=0;i<UOrder.size();i++){
+                MyFile<<UOrder[i];
+                MyFile<<' ';
+            }
+            MyFile<<endl;;
+            MyFile.close();
+        }
+        for(int i=ans+1;i<UnOrder.size();i++){
+            UOrder==UnOrder[i];
+            ofstream MyFile("UncOrders.txt",ios::app);
+            for(int i=0;i<UOrder.size();i++){
+                MyFile<<UOrder[i];
+                MyFile<<' ';
+            }
+            MyFile<<endl;;
+            MyFile.close();
+        }
+    }
+}
