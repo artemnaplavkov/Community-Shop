@@ -51,6 +51,7 @@ void UncOrder(vector<vector<string>>& UnOrder,vector<string>& UOrder){
         cout<<"List of uncomfirmed orders:"<<endl;
         for(int i=0;i<UnOrder.size();i++){
             UOrder=UnOrder[i];
+            cout<<i+1<<")";
             cout<<"Name: "<<UOrder[0]<<endl;
             cout<<"Password: "<<UOrder[1]<<endl;
             for(int j=2;j<UOrder.size()-2;j++){
@@ -59,38 +60,42 @@ void UncOrder(vector<vector<string>>& UnOrder,vector<string>& UOrder){
             cout<<endl<<"x="<<UOrder[UOrder.size()-2];
             cout<<endl<<"y="<<UOrder[UOrder.size()-1]<<endl;
         }
-        cout<<"+++++++++++++++++++++++"<<endl;
     }
+    cout<<"+++++++++++++++++++++++"<<endl;
 }
 void ROrder(vector<vector<string>>& UnOrder,vector<string>& UOrder){
     int ans;
     int flag=0;
-    cout<<"Enter number of order with one you would like to delete:"<<endl;
-    cin>>ans;
-    if(ans>UnOrder.size()){
-        cout<<"No such number"<<endl;
+    if(UnOrder.size()==0){
         flag=1;
     }
     if(flag==0){
-        remove("UncOrders.txt");
-        for(int i=0;i!=ans;i++){
-            UOrder==UnOrder[i];
-            ofstream MyFile("UncOrders.txt",ios::app);
-            for(int i=0;i<UOrder.size();i++){
-                MyFile<<UOrder[i];
-                MyFile<<' ';
-            }
-            MyFile<<endl;;
-            MyFile.close();
+        cout<<"Enter number of order with one you would like to delete:"<<endl;
+        cin>>ans;
+        if(ans>UnOrder.size()){
+            cout<<"No such number"<<endl;
+            flag=1;
         }
-        for(int i=ans+1;i<UnOrder.size();i++){
-            UOrder==UnOrder[i];
+        ans=ans-1;
+        if(flag==0){
+            remove("UncOrders.txt");
             ofstream MyFile("UncOrders.txt",ios::app);
-            for(int i=0;i<UOrder.size();i++){
-                MyFile<<UOrder[i];
-                MyFile<<' ';
+            for(int i=0;i<ans;i++){
+                UOrder=UnOrder[i];
+                for(int i=0;i<UOrder.size();i++){
+                    MyFile<<UOrder[i];
+                    if(i!=UOrder.size()-1) MyFile<<' ';
+                }
+                MyFile<<endl;;
             }
-            MyFile<<endl;;
+            for(int i=ans+1;i<UnOrder.size();i++){
+                UOrder=UnOrder[i];
+                for(int i=0;i<UOrder.size();i++){
+                    MyFile<<UOrder[i];
+                    if(i!=UOrder.size()-1) MyFile<<' ';
+                }
+                MyFile<<endl;
+            }
             MyFile.close();
         }
     }

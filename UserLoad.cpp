@@ -68,11 +68,10 @@ void User_list(vector<string>& V_pas,vector<string>& V_name,vector<char>& V_rs,v
     while(getline(kk,kkk)){
         for(int i=0;i<=kkk.size();i++){
             c=kkk[i];
-            if(i==kkk.size()) Order=Order+' ';
             if(c!=' '){
                 Order.push_back(c);
             }
-            else{
+            if(c==' ' || i==kkk.size()){
                 UOrder.push_back(Order);
                 Order.clear();
                 continue;

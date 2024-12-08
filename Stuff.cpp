@@ -27,6 +27,7 @@ int main()
     string Tname;
     string Tpas;
     vector<vector<string>> UnOrder;
+    vector<int> TUOrder;
     vector<string> UOrder;
     vector<string> V_name;
     vector<string> V_order;
@@ -50,20 +51,14 @@ int main()
         while(1){
             cout<<"---------------------------------------"<<endl
             <<"1-list of confirmed orders"<<endl//+
-            <<"2-create new gingerbread"<<endl
-            <<"3-change gingerbread"<<endl
-            <<"4-list of gingerbreads"<<endl
-            <<"5-create new warehouse"<<endl//+
-            <<"6-quantity of products in warehouses"<<endl
-            <<"7-add product in warehouse"<<endl
-            <<"8-add courer"<<endl//+
-            <<"9-list of courers"<<endl//+
-            <<"10-sales info"<<endl
-            <<"11-change status of a user"<<endl//+
-            <<"12-time shift"<<endl//+
-            <<"13-list of uncomfored orders"<<endl//+
-            <<"14-confirm order"<<endl//+
-            <<"15-delete order from uncomfired list"<<endl//+
+            <<"2-create new warehouse"<<endl//+
+            <<"3-add courer"<<endl//+
+            <<"4-list of courers"<<endl//+
+            <<"5-change status of a user"<<endl//+
+            <<"6-time shift"<<endl//+
+            <<"7-list of uncomfored orders"<<endl//+
+            <<"8-confirm order"<<endl//+
+            <<"9-delete order from uncomfired list"<<endl//+
             <<"---------------------------------------"<<endl;
             cin>>key;
             switch(key){
@@ -76,14 +71,14 @@ int main()
                                }
                            }
                            break;
-            case 5:
+            case 2:
                 database.add_storage(storages);
                             break;
-            case 8: {
+            case 3: {
                         database.add_courier(couriers, storages);
                         break;
                     }
-            case 9: {
+            case 4: {
                         std::cout << "couriers from storage id=";
                         int storage_id;
                         std::cin >> storage_id;
@@ -95,25 +90,28 @@ int main()
                         }
                         break;
                     }
-            case 11:
+            case 5:
                 ChangeStatus(V_pas,V_name,V_rs);
                 break;
-            case 12:
+            case 6:
                 std::cout << "hours=";
                             int hours;
                             std::cin >> hours;
                             time_manager.time_shift(hours, storages, couriers, orders);
                             break;
-            case 13:
+            case 7:
                 UncOrder( UnOrder, UOrder);
                 break;
-            case 14:
+            case 8:
                 UncOrder( UnOrder, UOrder);
                 database.add_order(orders, storages);
                             break;
-            case 15:
+            case 9:
                 UncOrder( UnOrder, UOrder);
                 ROrder(UnOrder,UOrder);
+                UnOrder.clear();
+                UOrder.clear();
+                User_list(V_pas,V_name,V_rs,UnOrder,UOrder);
                 break;
             default:
                 cout<<"Command error"<<endl;
@@ -125,20 +123,36 @@ int main()
         }
     }
     if(rs=='0'){
-        cout<<"---------------------------------------"<<endl;
-        cout<<"1-make an order"<<endl//+
-        <<"2-check order status"<<endl
-        <<"3-show list of your orders"<<endl
-        <<"4-cancel order"<<endl;
-        cout<<"---------------------------------------"<<endl;
-        cin>>key;
-        switch(key){
-            case 1:
-                MOrder(UnOrder,UOrder,Tname,Tpas);
-                break;
-            default:
-                cout<<"Command error"<<endl;
-                break;
+        while(1){
+            cout<<"---------------------------------------"<<endl;
+            cout<<"1-make an order"<<endl//+
+            <<"2-show list of your orders"<<endl
+            <<"3-cancel order"<<endl
+            <<"4-end programm"<<endl;
+            cout<<"---------------------------------------"<<endl;
+            cin>>key;
+            switch(key){
+                case 1:
+                    MOrder(UnOrder,UOrder,Tname,Tpas);
+                    UnOrder.clear();
+                    UOrder.clear();
+                    User_list(V_pas,V_name,V_rs,UnOrder,UOrder);
+                    break;
+                case 2:
+                    ShOrder(UnOrder,UOrder,Tname,Tpas);
+                    break;
+                case 3:
+                    DelOrder(UnOrder,UOrder,Tname,Tpas, TUOrder);
+                    UnOrder.clear();
+                    UOrder.clear();
+                    User_list(V_pas,V_name,V_rs,UnOrder,UOrder);
+                    break;
+                case 4:
+                    return 0;
+                default:
+                    cout<<"Command error"<<endl;
+                    break;
+            }
         }
     }
     return 0;
