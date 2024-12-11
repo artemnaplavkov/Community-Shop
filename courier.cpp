@@ -10,7 +10,6 @@ namespace abstracts {
 			<< "; current_order_id=" << current_order_id << "; ";
 		pos.print();
 	}
-	//read from mainframe?
 	void Courier::input() {
 		std::cout << "id=";
 		std::cin >> id;
@@ -21,7 +20,6 @@ namespace abstracts {
 		current_order_id = 0;
 		pos.input();
 	}
-	//do we need it?
 	void Courier::save(std::ofstream& os) {
 		os << id << " "
 			<< speed_kmh << " "
@@ -29,7 +27,6 @@ namespace abstracts {
 			<< current_order_id << " ";
 		pos.save(os);
 	}
-	//we need to realize read from mainframe 
 	void Courier::read(std::ifstream& is) {
 		is >> id >> speed_kmh >> storage_id >> current_order_id;
 		pos.read(is);

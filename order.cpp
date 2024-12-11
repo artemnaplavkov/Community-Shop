@@ -10,7 +10,6 @@ namespace abstracts {
 			<< "; state=" << state << "; ";
 		target.print();
 	}
-	//mainframe 
 	void Order::input() {
 		std::cout << "id=";
 		std::cin >> id;
@@ -20,14 +19,12 @@ namespace abstracts {
 		target.input();
 
 	}
-	//replace?
 	void Order::save(std::ofstream& os) {
 		os << id << " "
 			<< storage_id << " "
 			<< state << " ";
 		target.save(os);
 	}
-	//read from mainframe
 	void Order::read(std::ifstream& is) {
 		is >> id >> storage_id >> state;
 		target.read(is);
