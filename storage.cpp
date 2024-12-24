@@ -1,21 +1,22 @@
 #include "storage.h"
-#include <iostream>
+#include <sstream>
 
 namespace abstracts {
-	void Storage::print() {
-		std::cout << "id=" << id << "; ";
-		pos.print();
+	string Storage::print() {
+		ostringstream os;
+		os << "id=" << id << "; " << pos.print();
+		return os.str();
 	}
-	void Storage::input() {
-		std::cout << "id=";
-		std::cin >> id;
-		pos.input();
+	void Storage::input(Socket& socket) {
+		socket.set("id=");
+		id = atoi(socket.get().data());
+		pos.input(socket);
 	}
-	void Storage::save(std::ofstream& os) {
+	void Storage::save(ofstream& os) {
 		os << id << " ";
 		pos.save(os);
 	}
-	void Storage::read(std::ifstream& is) {
+	void Storage::read(ifstream& is) {
 		is >> id;
 		pos.read(is);
 	}
