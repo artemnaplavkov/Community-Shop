@@ -6,31 +6,33 @@
 #include <string>
 
 struct DatabaseManager {
-	std::string storage_file_name = "./storage.txt";
-	std::string order_file_name = "./order.txt";
-	std::string courier_file_name = "./courier.txt";
+	string storage_file_name = "./storage.txt";
+	string order_file_name = "./order.txt";
+	string courier_file_name = "./courier.txt";
 
-	void save(std::vector<abstracts::Storage> &storages);
-	void read(std::vector<abstracts::Storage>& storages);
-	void add_storage(std::vector<abstracts::Storage>& storages);
-	void remove_storage(
-		std::vector<abstracts::Storage>& storages, 
-		std::vector<abstracts::Courier>& couriers,
-		std::vector<abstracts::Order>& orders,
+	void save(vector<abstracts::Storage> &storages);
+	void read(vector<abstracts::Storage>& storages);
+	string add_storage(vector<abstracts::Storage>& storages, Socket&);
+	string remove_storage(
+		vector<abstracts::Storage>& storages, 
+		vector<abstracts::Courier>& couriers,
+		vector<abstracts::Order>& orders,
 		int storage_id);
 
-	void save(std::vector<abstracts::Courier>& couriers);
-	void read(std::vector<abstracts::Courier>& couriers);
-	void add_courier(
-		std::vector<abstracts::Courier>& couriers,
-		std::vector<abstracts::Storage>& storages);
-	void remove_courier(
-		std::vector<abstracts::Courier>& couriers,
+	void save(vector<abstracts::Courier>& couriers);
+	void read(vector<abstracts::Courier>& couriers);
+	string add_courier(
+		vector<abstracts::Courier>& couriers,
+		vector<abstracts::Storage>& storages, 
+		Socket&);
+	string remove_courier(
+		vector<abstracts::Courier>& couriers,
 		int courier_id);
 
-	void save(std::vector<abstracts::Order>& orders);
-	void read(std::vector<abstracts::Order>& orders);
-	void add_order(
-		std::vector<abstracts::Order>& orders,
-		std::vector<abstracts::Storage>& storages);
+	void save(vector<abstracts::Order>& orders);
+	void read(vector<abstracts::Order>& orders);
+	string add_order(
+		vector<abstracts::Order>& orders,
+		vector<abstracts::Storage>& storages,
+		Socket&);
 };

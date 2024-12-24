@@ -1,6 +1,10 @@
 #pragma once
-#include "point.h"
 #include <fstream>
+#include <string>
+#include "point.h"
+#include "socket.h"
+
+using namespace std;
 
 namespace abstracts {
 	struct Courier {
@@ -10,9 +14,9 @@ namespace abstracts {
 		int current_order_id;
 		Point pos;
 
-		void print();
-		void input();
-		void save(std::ofstream& os);
-		void read(std::ifstream& is);
+		string print();
+        void input(Socket&);
+		void save(ofstream& os);
+		void read(ifstream& is);
 	};
 }
