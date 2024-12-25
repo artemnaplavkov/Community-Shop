@@ -1,6 +1,7 @@
 #pragma once
 #include "point.h"
 
+
 namespace abstracts {
 	int const not_processed = 0;
 	int const in_progress = 1;
@@ -12,9 +13,9 @@ namespace abstracts {
 		int state;
 		Point target;
 
-		void print();
-		void input();
-		void save(std::ofstream& os);
-		void read(std::ifstream& is);
+		string print();
+		void input(Socket&);
+		void save(ofstream& os);
+		void read(ifstream& is);
 	};
 }
