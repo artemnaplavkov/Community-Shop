@@ -59,8 +59,7 @@ void menu(Socket& socket) {
 			ostringstream os;
 			os << "storages:\n";
 			for (int i = 0; i < storages.size(); i++) {
-				storages[i].print();
-				os << "\n";
+				os << storages[i].print() << "\n";
 			}
 			str = os.str();
 			break;
