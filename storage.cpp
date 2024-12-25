@@ -20,4 +20,4 @@ namespace abstracts {
 		is >> id;
 		pos.read(is);
 	}
-}
+}     
