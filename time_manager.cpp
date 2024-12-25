@@ -1,7 +1,7 @@
 #include "time_manager.h"
 #include "point_manager.h"
 
-int find_storage(std::vector<abstracts::Storage>& storages, int storage_id) {   // Ищет хранилище с совпадающим id
+int find_storage(vector<abstracts::Storage>& storages, int storage_id) {
 	for (int i = 0; i < storages.size();i++) {
 		if (storages[i].id == storage_id)
 			return i;
@@ -9,7 +9,7 @@ int find_storage(std::vector<abstracts::Storage>& storages, int storage_id) {   
 	return -1;
 }
 
-int find_courier(std::vector<abstracts::Courier>& couriers, abstracts::Storage& storage) {   // Ищет курьера связанного с хранилищем
+int find_courier(vector<abstracts::Courier>& couriers, abstracts::Storage& storage) {
 	for (int i = 0; i < couriers.size(); i++) {
 		if (couriers[i].storage_id != storage.id)
 			continue;
@@ -22,7 +22,7 @@ int find_courier(std::vector<abstracts::Courier>& couriers, abstracts::Storage& 
 	return -1;
 }
 
-int find_courier(std::vector<abstracts::Courier>& couriers, abstracts::Order& order) {  // Ищет курьера, который уже выполняет заказ
+int find_courier(vector<abstracts::Courier>& couriers, abstracts::Order& order) {
 	for (int i = 0; i < couriers.size(); i++) {
 		if (couriers[i].current_order_id != order.id)
 			continue;
@@ -33,7 +33,7 @@ int find_courier(std::vector<abstracts::Courier>& couriers, abstracts::Order& or
 	return -1;
 }
 
-int find_order(std::vector<abstracts::Order>& orders, int order_id) {   // Ищет заказ с идентификатором "order_id" в "orders"
+int find_order(vector<abstracts::Order>& orders, int order_id) {
 	for (int i = 0; i < orders.size(); i++) {
 		if (orders[i].id == order_id)
 			return i;
@@ -41,10 +41,10 @@ int find_order(std::vector<abstracts::Order>& orders, int order_id) {   // Ищ�
 	return -1;
 }
 
-void TimeManager::time_shift(int hours,   //  Сдвигает время на заданное число часов, выполняя: назначение заказов, перемещение курьеров, завершение заказов.
-	std::vector<abstracts::Storage>& storages,
-	std::vector<abstracts::Courier>& couriers,
-	std::vector<abstracts::Order>& orders) {
+void TimeManager::time_shift(int hours,
+	vector<abstracts::Storage>& storages,
+	vector<abstracts::Courier>& couriers,
+	vector<abstracts::Order>& orders) {
 	for (int i = 0; hours > i; i++) {
 		assign_orders(storages, couriers, orders);
 		one_hour_move(storages, couriers, orders);
@@ -52,10 +52,10 @@ void TimeManager::time_shift(int hours,   //  Сдвигает время на �
 	}
 }
 
-void TimeManager::assign_orders(    //  проверяет каждый заказ в "orders", если заказ не обработан находит соответствующее хранилище, курьера, связанного с этим хранилищем, если курьер найден, устанавливает состояние заказа и связывает с ним курьера
-	std::vector<abstracts::Storage>& storages,
-	std::vector<abstracts::Courier>& couriers,
-	std::vector<abstracts::Order>& orders) {
+void TimeManager::assign_orders(
+	vector<abstracts::Storage>& storages,
+	vector<abstracts::Courier>& couriers,
+	vector<abstracts::Order>& orders) {
 	for (int i = 0; i < orders.size();i++) {
 		if (orders[i].state != abstracts::not_processed)
 			continue;
@@ -67,10 +67,10 @@ void TimeManager::assign_orders(    //  проверяет каждый зака
 		couriers[courier_index].current_order_id = orders[i].id;
 	}
 }
-void TimeManager::one_hour_move(    // Перемещает курьеров на основании их текущей позиции
-	std::vector<abstracts::Storage>& storages,
-	std::vector<abstracts::Courier>& couriers,
-	std::vector<abstracts::Order>& orders) {
+void TimeManager::one_hour_move(
+	vector<abstracts::Storage>& storages,
+	vector<abstracts::Courier>& couriers,
+	vector<abstracts::Order>& orders) {
 	for (int i = 0; i < couriers.size(); i++) {
 		abstracts::Point a = couriers[i].pos;
 		abstracts::Point b;
@@ -85,10 +85,10 @@ void TimeManager::one_hour_move(    // Перемещает курьеров н�
 		couriers[i].pos = singletones::PointManager::new_point(a, b, couriers[i].speed_kmh);
 	}
 }
-void TimeManager::complete_orders(   //  Проверяет все заказы, если заказ в процессе, то ищет курьера, выполняющего этот заказ, если курьер найден, завершает заказ и освобождает курьера
-	std::vector<abstracts::Storage>& storages,
-	std::vector<abstracts::Courier>& couriers,
-	std::vector<abstracts::Order>& orders) {
+void TimeManager::complete_orders(
+	vector<abstracts::Storage>& storages,
+	vector<abstracts::Courier>& couriers,
+	vector<abstracts::Order>& orders) {
 	for (int i = 0; i < orders.size(); i++) {
 		if (orders[i].state != abstracts::in_progress)
 			continue;
