@@ -2,10 +2,10 @@
 
 Артём - main , ctest, database_manager,mainframe 
 
-Тася - point, point_manager
+Тася - point
 
-Вика - order, storage, courier
+Вика - order, courier
 
-Соня - time_manager
+Соня - time_manager, point_manager
 
-Максим - time_manager
+Максим - time_manager, storage
